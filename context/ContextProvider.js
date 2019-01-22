@@ -7,118 +7,29 @@ import ObjectId from '../utils/id_generator';//temporary just for developing
 import DocumentIO from '../models/documentIO';
 import Customer from '../models/customer';
 
+import data from './data';
+
 let documentIO = new DocumentIO();
 
 class ContextProvider extends Component {
     constructor() {
         super();
         this.state = {
-            beers: [
-                {
-                    id: ObjectId(),
-                    name: 'Diablo',
-                    type: 'Red Ale',
-                    selling_price: 35,
-                    cost_price: 25,
-                    stock: 100,
-                    status: true
-                },
-                {
-                    id: ObjectId(),
-                    name: 'Tritón',
-                    type: 'American Pale Ale',
-                    selling_price: 35,
-                    cost_price: 25,
-                    stock: 100,
-                    status: true
-                },
-                {
-                    id: ObjectId(),
-                    name: 'Porter',
-                    type: 'Porter',
-                    selling_price: 35,
-                    cost_price: 25,
-                    stock: 100,
-                    status: true
-                }
-            ],
-            customers: [
-                {
-                    id: ObjectId(),
-                    name: 'Vidita Mia',
-                    phone: '555-1234', 
-                    address: 'Úrsulo Galván #3, Col. Belisario Domínguez',
-                    status: true
-                },
-                {
-                    id: ObjectId(),
-                    name: 'Tiendita',
-                    phone: '555-1234',
-                    address: 'Alguno',
-                    status: true
-                },
-                {
-                    id: ObjectId(),
-                    name: 'Tiendita',
-                    phone: '555-1234',
-                    address: 'Alguno',
-                    status: true
-                },
-                {
-                    id: ObjectId(),
-                    name: 'Tiendita',
-                    phone: '555-1234',
-                    address: 'Alguno',
-                    status: true
-                },
-                {
-                    id: ObjectId(),
-                    name: 'Tiendita',
-                    phone: '555-1234',
-                    address: 'Alguno',
-                    status: true
-                },
-                {
-                    id: ObjectId(),
-                    name: 'Vidita Mia',
-                    phone: '555-1234', 
-                    address: 'Úrsulo Galván #3, Col. Belisario Domínguez',
-                    status: true
-                },
-                {
-                    id: ObjectId(),
-                    name: 'Vidita Mia',
-                    phone: '555-1234', 
-                    address: 'Úrsulo Galván #3, Col. Belisario Domínguez',
-                    status: true
-                },
-                {
-                    id: ObjectId(),
-                    name: 'Vidita Mia',
-                    phone: '555-1234', 
-                    address: 'Úrsulo Galván #3, Col. Belisario Domínguez',
-                    status: true
-                },
-                {
-                    id: ObjectId(),
-                    name: 'Vidita Mia',
-                    phone: '555-1234', 
-                    address: 'Úrsulo Galván #3, Col. Belisario Domínguez',
-                    status: true
-                },
-                {
-                    id: ObjectId(),
-                    name: 'Vidita Mia',
-                    phone: '555-1234', 
-                    address: 'Úrsulo Galván #3, Col. Belisario Domínguez',
-                    status: true
-                },
-            ]
+            sales: [],
+            deposits: [],
+            beers: [],
+            customers: []
         }
     }
 
     componentDidMount() {
         //this.readData();
+        this.setState({
+            beers: data.beers,
+            customers: data.customers,
+            deposits: data.deposits,
+            sales: data.sales
+        })
     }
 
     //customers

@@ -7,7 +7,7 @@ export default class Sale {
             date: new Date(),
             customer: customer,
             beer: beer,
-            ammout: ammount
+            ammount: ammount
         }
     }
 }

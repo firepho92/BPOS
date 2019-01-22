@@ -6,7 +6,7 @@ export default class Deposit {
             id: objectId(),
             date: new Date(),
             customer: customer,
-            ammout: ammount
+            ammount: ammount
         }
     }
 }
