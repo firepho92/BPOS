@@ -43,7 +43,7 @@ customers: [
         phone: '555-1234',
         address: 'Alguno',
         status: true
-    }
+    },
 ],
 sales: [
   {

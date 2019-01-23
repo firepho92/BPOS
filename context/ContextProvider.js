@@ -18,7 +18,11 @@ class ContextProvider extends Component {
             sales: [],
             deposits: [],
             beers: [],
-            customers: []
+            customers: [],
+            alert: {
+                visible: false,
+                msg: ''
+            }
         }
     }
 
@@ -34,10 +38,24 @@ class ContextProvider extends Component {
 
     //customers
     addCustomer = async (name, phone, address) => {
-        var customer = new Customer(name, phone, address);        
+        let customer = new Customer(name, phone, address);        
         this.setState(prevState => ({
             customers: [...prevState.customers, customer.customer]
-        }));        
+        }));
+        return true;        
+    }
+
+    deleteCustomer = async (id) => {
+        console.log(id);
+        let customers = this.state.customers;
+        let index = this.state.customers.map((customer, index) => {
+            if(customer.id === id) {
+                return index;
+            }
+        }).filter(isFinite);
+        console.log(index);
+        customers.splice(index, 1);
+        return true;
     }
 
     //beers
@@ -45,6 +63,24 @@ class ContextProvider extends Component {
         this.setState(prevState => ({
             beers: [...prevState.beers, beer]
         }));
+    }
+
+    showAlert = (msg) => {
+        this.setState({
+            alert: {
+                visible: true,
+                msg: msg
+            }
+        });
+    }
+
+    hideAlert = () => {
+        this.setState({
+            alert: {
+                visible: false,
+                msg: ''
+            }
+        });
     }
 
     storeData = async () => {
@@ -65,7 +101,10 @@ class ContextProvider extends Component {
                 storeData: this.storeData,
                 readData: this.readData,
                 addCustomer: this.addCustomer,
-                addBeer: this.addBeer
+                deleteCustomer: this.deleteCustomer,
+                addBeer: this.addBeer,
+                showAlert: this.showAlert,
+                hideAlert: this.hideAlert
             }}>
                 {this.props.children}
             </AppContext.Provider>
