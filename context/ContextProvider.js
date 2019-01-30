@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 
 import AppContext from './AppContext';
 
-import ObjectId from '../utils/id_generator';//temporary just for developing
-
 import DocumentIO from '../models/documentIO';
 import Customer from '../models/customer';
 
@@ -42,18 +40,16 @@ class ContextProvider extends Component {
         this.setState(prevState => ({
             customers: [...prevState.customers, customer.customer]
         }));
-        return true;        
+        return true;
     }
 
     deleteCustomer = async (id) => {
-        console.log(id);
         let customers = this.state.customers;
         let index = this.state.customers.map((customer, index) => {
             if(customer.id === id) {
                 return index;
             }
         }).filter(isFinite);
-        console.log(index);
         customers.splice(index, 1);
         return true;
     }
@@ -63,6 +59,27 @@ class ContextProvider extends Component {
         this.setState(prevState => ({
             beers: [...prevState.beers, beer]
         }));
+    }
+
+    //sales
+    addSale = (sales) => {
+        let beers = this.state.beers;
+        sales.map(sale => {
+          beers.map(beer => {
+            if(sale.beer === beer.id) {
+              if (sale.ammount <= beer.stock) {
+                beer.stock -= sale.ammount;
+                this.setState(prevState => ({
+                    sales: [...prevState.sales, sales]
+                }));
+                return true;
+              } else {
+                this.showAlert(`No hay suficientes ${beer.name}s en stock.`);
+                return false;
+              }
+            }
+          });
+        });
     }
 
     showAlert = (msg) => {
@@ -103,6 +120,7 @@ class ContextProvider extends Component {
                 addCustomer: this.addCustomer,
                 deleteCustomer: this.deleteCustomer,
                 addBeer: this.addBeer,
+                addSale: this.addSale,
                 showAlert: this.showAlert,
                 hideAlert: this.hideAlert
             }}>

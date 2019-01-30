@@ -1,10 +1,8 @@
-var objectId = require('../utils/id_generator');
-
 export default class Sale {
-    constructor(customer, ammount) {
+    constructor(ticket, date, customer, beer, ammount) {
         this.sale = {
-            id: objectId(),
-            date: new Date(),
+            ticket: ticket,
+            date: date,
             customer: customer,
             beer: beer,
             ammount: ammount

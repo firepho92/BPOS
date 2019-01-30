@@ -12,9 +12,11 @@ import Theme from './Theme';
 
 import AppContext from '../context/AppContext';
 
+import moment from 'moment';
+
 export default class Customer extends React.Component {
   state = {
-    open: false
+    open: false,
   }
   static navigationOptions = {
     header: null,
@@ -36,6 +38,7 @@ export default class Customer extends React.Component {
   }
 
   render() {
+    moment.locale('es');
     return (
       <Provider>
         <AppContext.Consumer>
@@ -56,7 +59,7 @@ export default class Customer extends React.Component {
                   actions={[
                     { icon: 'clear', label: 'Eliminar', onPress: () => this._deleteCustomer(context.deleteCustomer, context.showAlert)},
                     { icon: 'create', label: 'Editar', onPress: () => console.log('Pressed edit') },
-                    { icon: "attach-money", label: 'Vender', onPress: () => console.log('Pressed new sale')},
+                    { icon: "attach-money", label: 'Vender', onPress: () => this.props._setView(3, this.props.customer)},
                   ]}
                   theme={Theme}
                   style={styles.fab}
@@ -82,10 +85,10 @@ export default class Customer extends React.Component {
                   <ScrollView>
                     <List.Section title="Movimientos">
                       <List.Accordion title="Ventas" theme={Theme}>
-                        {context.state.sales.filter(sale => sale.customer === this.props.customer.id).map(sale => <List.Item key={sale.id} title={sale.ammount + ''}/>)}
+                        {context.state.sales.filter(sale => sale.customer === this.props.customer.id).map((sale, i) => <List.Item key={i} title={'fecha: ' + moment(sale.date).format('L') + ' - $' + sale.ammount * context.state.beers.filter(beer => beer.id === sale.beer).map(beer => beer.selling_price)}/>)}
                       </List.Accordion>
                       <List.Accordion title="Depósitos" theme={Theme}>
-                        {context.state.deposits.filter(deposit => deposit.customer === this.props.customer.id).map(deposit => <List.Item key={deposit.id} title={deposit.ammount + ''}/>)}
+                        {context.state.deposits.filter(deposit => deposit.customer === this.props.customer.id).map(deposit => <List.Item key={deposit.id} title={'fecha: ' + moment(deposit.date).format('L') + ' - $' + deposit.ammount + ''}/>)}
                       </List.Accordion>
                     </List.Section>
                   </ScrollView>
@@ -123,7 +126,6 @@ const styles = StyleSheet.create({
   },
   dynamicContent: {
     backgroundColor: '#fff',
-    padding: 10,
     maxHeight: 250,
     borderRadius: Theme.roundness
   },

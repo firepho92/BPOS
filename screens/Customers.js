@@ -30,7 +30,7 @@ export default class Customers extends React.Component {
                 {context.state.customers.map((customer, i) => {
                   return (
                     <TouchableRipple key={customer.id} onPress={() => this.props._setView(1, customer)}>
-                      <List.Item style={i === context.state.customers.length - 1 ? styles.noBorder : styles.border} left={props => <List.Icon {...props} icon="person" />} title={customer.name} right={props => <List.Icon {...props} icon="keyboard-arrow-right" />}/>
+                      <List.Item left={props => <List.Icon {...props} icon="person" />} title={customer.name} right={props => <List.Icon {...props} icon="keyboard-arrow-right" />}/>
                     </TouchableRipple>
                   );
                 })}
@@ -41,7 +41,7 @@ export default class Customers extends React.Component {
               style={styles.fab}
               icon="add"
               onPress={() => this.props._setView(2, null)}
-              />
+            />
           </View>
         )}
       </AppContext.Consumer>
@@ -63,13 +63,6 @@ const styles = StyleSheet.create({
   bodyContainer: {
     height: 465 //tamaño perfecto del body, solo por si acaso, borrar al final del proyecto
   },
-  border: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#e8e8e8'
-  },
-  noBorder: {
-    borderWidth: 0,
-  },
   container: {
     display: 'flex',
     flex: 1,
@@ -77,8 +70,6 @@ const styles = StyleSheet.create({
   },
   dynamicContent: {
     backgroundColor: '#fff',
-    paddingLeft: 10,
-    paddingRight: 10,
     maxHeight: 445,
     borderRadius: Theme.roundness
   },

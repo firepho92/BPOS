@@ -3,6 +3,8 @@ import React, {Fragment} from 'react';
 import Customers from './Customers';
 import Customer from './Customer';
 import AddNewCustomer from './AddNewCustomer';
+import SaleScreen from './Sale';
+
 import {Snackbar} from 'react-native-paper';
 
 import Theme from './Theme';
@@ -33,16 +35,11 @@ export default class HomeScreen extends React.Component {
             {this.state.view === 0 ? <Customers _setView={this._setView}/> : null}
             {this.state.view === 1 ? <Customer customer={this.state.customer} _setView={this._setView} /> : null}
             {this.state.view === 2 ? <AddNewCustomer _setView={this._setView}/> : null}
+            {this.state.view === 3 ? <SaleScreen _setView={this._setView} customer={this.state.customer}/> : null}
             <Snackbar
               visible={context.state.alert.visible}
               onDismiss={() => context.hideAlert()}
-              action={{
-                label: 'Cerrar',
-                onPress: () => {
-                  context.hideAlert()
-                },
-              }}
-              duration={3000}
+              duration={1000}
               theme={Theme}
             >
               {context.state.alert.msg}

@@ -1,10 +1,10 @@
 var objectId = require('../utils/id_generator');
 
 export default class Deposit {
-    constructor(customer, ammount) {
+    constructor(date, customer, ammount) {
         this.sale = {
             id: objectId(),
-            date: new Date(),
+            date: date,
             customer: customer,
             ammount: ammount
         }

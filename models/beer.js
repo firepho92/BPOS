@@ -1,7 +1,7 @@
 var objectId = require('../utils/id_generator');
 
 export default class Beer {
-    constructor(name, type, selling_price, cost_price, stock, status) {
+    constructor(name, type, selling_price, cost_price, stock, color, status) {
         this.beer = {
             id: objectId(),
             name: name,
@@ -9,6 +9,7 @@ export default class Beer {
             selling_price: selling_price,
             cost_price: cost_price,
             stock: stock,
+            color: color,
             status: status
         }
     }

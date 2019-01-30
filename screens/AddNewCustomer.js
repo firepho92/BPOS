@@ -36,7 +36,7 @@ export default class AddNewCustomer extends React.Component {
   render() {
     return (
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding" enabled>
-        <AppContext>
+        <AppContext.Consumer>
           {context => (
             <View style={styles.baseContainer}>
               <Appbar.Header theme={Theme}>
@@ -89,7 +89,7 @@ export default class AddNewCustomer extends React.Component {
               </ScrollView>
             </View>
           )}
-        </AppContext>
+        </AppContext.Consumer>
       </KeyboardAvoidingView>
     );
   }
