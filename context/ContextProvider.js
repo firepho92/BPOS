@@ -63,15 +63,17 @@ class ContextProvider extends Component {
 
     //sales
     addSale = (sales) => {
+        let response;
         let beers = this.state.beers;
-        sales.map(sale => {
-          beers.map(beer => {
+        response = sales.map(sale => {
+          return response = beers.map(beer => {
             if(sale.beer === beer.id) {
               if (sale.ammount <= beer.stock) {
                 beer.stock -= sale.ammount;
                 this.setState(prevState => ({
                     sales: [...prevState.sales, sales]
                 }));
+                this.showAlert('Venta exitosa.');
                 return true;
               } else {
                 this.showAlert(`No hay suficientes ${beer.name}s en stock.`);
@@ -80,6 +82,7 @@ class ContextProvider extends Component {
             }
           });
         });
+        return response;
     }
 
     showAlert = (msg) => {

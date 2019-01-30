@@ -51,6 +51,12 @@ export default class SaleScreen extends React.Component {
     cartItems.splice(index, 1);
   }
 
+  _clearCart = () => {
+    this.setState({
+      cartItems: []
+    });
+  }
+
   _showDialog = () => {
     this.setState({
       visible: true
@@ -83,7 +89,7 @@ export default class SaleScreen extends React.Component {
           {context => (
             <View style={styles.baseContainer}>
               <DefineQuantity visible={this.state.quantityOpen} _hideQuantityDialog={this._hideQuantityDialog} _addItemToCart={this._addItemToCart} beer_id={this.state.beer_id}/>
-              {this.state.cartItems.length > 0 ? <Cart visible={this.state.visible} _hideDialog={this._hideDialog} cartItems={this.state.cartItems} _setView={this.props._setView} customer={this.props.customer}/> : null}
+              {this.state.cartItems.length > 0 ? <Cart visible={this.state.visible} _hideDialog={this._hideDialog} cartItems={this.state.cartItems} _setView={this.props._setView} customer={this.props.customer} _clearCart={this._clearCart}/> : null}
               <Appbar.Header theme={Theme}>
                 <Appbar.BackAction
                   onPress={() => this.props._setView(1, this.props.customer)}
