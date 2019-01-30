@@ -41,6 +41,16 @@ export default class SaleScreen extends React.Component {
     return true;
   }
 
+  _removeItemFromCart = (beer_id) => {
+    let cartItems = this.state.cartItems;
+    let index = this.state.cartItems.map((cartItem, index) => {
+      if(cartItem.beer === beer_id) {
+        return index;
+      }
+    }).filter(isFinite);
+    cartItems.splice(index, 1);
+  }
+
   _showDialog = () => {
     this.setState({
       visible: true
@@ -66,19 +76,6 @@ export default class SaleScreen extends React.Component {
     });
   }
 
-  _handleInputChange = (value, inputName) => {
-    this.setState({
-      [inputName]:value
-    });
-  }
-
-  _submitData = (addCustomer, showAlert) => {
-    if(addCustomer(this.state.name, this.state.phone, this.state.address)) {
-      showAlert('Agregado correctamente');
-      this.props._setView(0, null)
-    }
-  }
-
   render() {
     return (
       <Provider>
@@ -86,7 +83,7 @@ export default class SaleScreen extends React.Component {
           {context => (
             <View style={styles.baseContainer}>
               <DefineQuantity visible={this.state.quantityOpen} _hideQuantityDialog={this._hideQuantityDialog} _addItemToCart={this._addItemToCart} beer_id={this.state.beer_id}/>
-              {this.state.cartItems.length > 0 ? <Cart visible={this.state.visible} _hideDialog={this._hideDialog} cartItems={this.state.cartItems} _setView={this.props._setView} cutomer={this.props.customer}/> : null}
+              {this.state.cartItems.length > 0 ? <Cart visible={this.state.visible} _hideDialog={this._hideDialog} cartItems={this.state.cartItems} _setView={this.props._setView} customer={this.props.customer}/> : null}
               <Appbar.Header theme={Theme}>
                 <Appbar.BackAction
                   onPress={() => this.props._setView(1, this.props.customer)}

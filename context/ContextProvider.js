@@ -43,10 +43,10 @@ class ContextProvider extends Component {
         return true;
     }
 
-    deleteCustomer = async (id) => {
+    deleteCustomer = async (customer_id) => {
         let customers = this.state.customers;
         let index = this.state.customers.map((customer, index) => {
-            if(customer.id === id) {
+            if(customer.id === customer_id) {
                 return index;
             }
         }).filter(isFinite);

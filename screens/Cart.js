@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { ScrollView } from 'react-native';
-import { Button, DataTable, Dialog, List, Portal, Text } from 'react-native-paper';
-//import { Cell, DataTable, Header, HeaderCell, Row } from 'react-native-data-table';
+import { ScrollView, View } from 'react-native';
+import { Button, Dialog, Divider, List, Portal, Surface, Text } from 'react-native-paper';
 
 import Theme from './Theme';
 
@@ -28,18 +27,32 @@ export default class Cart extends React.Component {
               <Dialog.Title>Carrito</Dialog.Title>
               <Dialog.ScrollArea>
                 <ScrollView>
-                  <DataTable>
-                    <DataTable.Header>
-                      <DataTable.Title>Cerveza</DataTable.Title>
-                      <DataTable.Title numeric>Cantidad</DataTable.Title>
-                      <DataTable.Title numeric>$ Unitario</DataTable.Title>
-                      <DataTable.Title numeric>Subtotal</DataTable.Title>
-                    </DataTable.Header>
 
-                    {this.props.cartItems.map((item, i) => <DataTable.Row key={i}><DataTable.Cell style={{textAlign: 'center'}}>{context.state.beers.filter(beer => beer.id === item.beer).map(beer => beer.name)}</DataTable.Cell><DataTable.Cell numeric>{item.ammount}</DataTable.Cell><DataTable.Cell numeric>${context.state.beers.filter(beer => beer.id === item.beer).map(beer => beer.selling_price)}</DataTable.Cell><DataTable.Cell numeric>${context.state.beers.filter(beer => beer.id === item.beer).map(beer => beer.selling_price * item.ammount)}</DataTable.Cell></DataTable.Row>)}
-                    
-                  </DataTable>
-                  <List.Item right={props => <Text>Total: ${this.props.cartItems.reduce((accum, item) => accum + item.ammount * context.state.beers.filter(beer => beer.id === item.beer).map(beer => beer.selling_price), 0)}</Text>}/>
+                  <View style={{display: 'flex', flexDirection: 'row', marginTop: 5, marginBottom: 5}}>
+                    <Text style={{flex: 1, textAlign: 'center'}}>Cerveza</Text>
+                    <Text style={{flex: 1, textAlign: 'center'}}>Cantidad</Text>
+                    <Text style={{flex: 1, textAlign: 'center'}}>Precio</Text>
+                    <Text style={{flex: 1, textAlign: 'center'}}>Subtotal</Text>
+                    <Text style={{flex: 1, textAlign: 'center'}}> </Text>
+                  </View>
+
+                  <Divider/>
+                  
+                  {this.props.cartItems.map((item, i) => {
+                    return (
+                      <Surface style={{display: 'flex', flexDirection: 'row', marginTop: 5, marginBottom: 5, elevation: 2, borderRadius: 5, height: 15}} key={i}>
+                        <Text style={{flex: 1, textAlign: 'center'}}>{context.state.beers.filter(beer => beer.id === item.beer).map(beer => beer.name)}</Text>
+                        <Text style={{flex: 1, textAlign: 'center'}}>{item.ammount}</Text>
+                        <Text style={{flex: 1, textAlign: 'center'}}>${context.state.beers.filter(beer => beer.id === item.beer).map(beer => beer.selling_price)}</Text>
+                        <Text style={{flex: 1, textAlign: 'center'}}>${context.state.beers.filter(beer => beer.id === item.beer).map(beer => beer.selling_price * item.ammount)}</Text>
+                        <View style={{flex: 1, width: 10}}><Text style={{color: '#FF1744', textAlign: 'center'}} onPress={() => console.log('pressed ' + item.beer)}>X</Text></View>
+                      </Surface>
+                    );
+                  })}
+                  
+                  <Divider/>
+
+                  <List.Item style={{paddingLeft: 5}} right={props => <Text>Total: ${this.props.cartItems.reduce((accum, item) => accum + item.ammount * context.state.beers.filter(beer => beer.id === item.beer).map(beer => beer.selling_price), 0)}</Text>}/>
                   
                 </ScrollView>
               </Dialog.ScrollArea>
