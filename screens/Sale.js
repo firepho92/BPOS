@@ -93,7 +93,6 @@ export default class SaleScreen extends React.Component {
                 />
                 <Appbar.Content
                   title="Agregar al carrito"
-                  onPress={() => console.log(context.state.beers)}
                 />
               </Appbar.Header>
               <View style={styles.body}>

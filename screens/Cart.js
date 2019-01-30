@@ -2,6 +2,7 @@ import React from 'react';
 
 import { ScrollView } from 'react-native';
 import { Button, DataTable, Dialog, List, Portal, Text } from 'react-native-paper';
+//import { Cell, DataTable, Header, HeaderCell, Row } from 'react-native-data-table';
 
 import Theme from './Theme';
 
