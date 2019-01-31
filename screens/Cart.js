@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ScrollView, Vibration, View } from 'react-native';
+import { Animated, ScrollView, StyleSheet, Vibration, View } from 'react-native';
 import { Button, Dialog, Divider, List, Portal, Text, TouchableRipple } from 'react-native-paper';
 
 import Theme from './Theme';
@@ -11,7 +11,7 @@ export default class Cart extends React.Component {
   constructor() {
     super();
     this.state = {
-      selected: []
+      selectedIndex: []
     }
   }
   
@@ -23,19 +23,45 @@ export default class Cart extends React.Component {
     }
   }
 
-  _handleLongPress = () => {
-    console.log('hola');
+  _handleLongPress = (beer_id) => {
+    this._addSelected(beer_id);
     
     Vibration.vibrate(100, true);
   }
 
+  _addSelected = (beer_id) => {
+    this.setState(prevState => ({
+      selectedIndex: [...prevState.selectedIndex, beer_id]
+    }))
+  }
+
+  _removeSelected = (beer_id) => {
+    let index = 0;
+    let selectedIndexes = this.state.selectedIndex;
+    for(var i = 0; i < this.state.selectedIndex.length; i++)
+      if(this.state.selectedIndex === beer_id) index = i;
+    selectedIndexes.splice(index, 1);
+    this.setState({
+      selectedIndex: selectedIndexes
+    });
+  }
+
   _handleCancel = () => {
+    this.setState({
+      selectedIndex: []
+    });
     this.props._clearCart();
+  }
+
+  _isSelected = (beer_id) => {
+    for(var j = 0; j < this.state.selectedIndex.length; j++)
+      if(this.state.selectedIndex[j] === beer_id) return true;
+    return false;
   }
 
   render() {
     return (
-      <AppContext>
+      <AppContext.Consumer>
         {context => (
           <Portal>
             <Dialog
@@ -53,11 +79,12 @@ export default class Cart extends React.Component {
                   <Divider/>
                   
                   {this.props.cartItems.map((item, i) => {
+                    console.log(this.state.selectedIndex);
                     return (
-                      <Item key={i} beers={context.state.beers} item={item} _handleLongPress={this._handleLongPress}/>
+                      this._isSelected(item.beer) ? <SelectedItem key={i} beer={item.beer} _removeSelected={this._removeSelected}/> : <Item key={i} beers={context.state.beers} item={item} beer={item.beer} _handleLongPress={this._handleLongPress}/>
                     );
                   })}
-                  
+
                   <Divider/>
 
                   <List.Item style={{paddingLeft: 5}} right={props => <Text>Total: ${this.props.cartItems.reduce((accum, item) => accum + item.ammount * context.state.beers.filter(beer => beer.id === item.beer).map(beer => beer.selling_price), 0)}</Text>}/>
@@ -72,16 +99,15 @@ export default class Cart extends React.Component {
             </Dialog>
           </Portal>
         )}
-      </AppContext>
+      </AppContext.Consumer>
     );
   }
 }
 
 class Item extends React.Component {
-
   render() {
     return (
-      <TouchableRipple onPress={() => console.log('adios')} onLongPress={() => this.props._handleLongPress()} rippleColor="rgba(43, 106, 235, 1)" underlayColor="rgba(43, 106, 235, 1)">
+      <TouchableRipple onPress={() => console.log('adios')} onLongPress={() => this.props._handleLongPress(this.props.beer)} rippleColor="rgba(43, 106, 235, 1)" underlayColor="rgba(43, 106, 235, 1)">
         <View style={{alignItems: 'center', display: 'flex', flexDirection: 'row', height: 50}}>
           <Text style={{flex: 1, textAlign: 'center'}}>{this.props.beers.filter(beer => beer.id === this.props.item.beer).map(beer => beer.name)}</Text>
           <Text style={{flex: 1, textAlign: 'center'}}>{this.props.item.ammount}</Text>
@@ -92,3 +118,53 @@ class Item extends React.Component {
     );
   }
 }
+
+class SelectedItem extends React.Component {
+  constructor() {
+    super();
+    this.animatedValue = new Animated.Value(0);
+  }
+
+  animateBackgroundColor = () => {
+    this.animatedValue.setValue(0);
+    Animated.timing(
+      this.animatedValue,
+      {
+        toValue: 1,
+        duration: 1000
+      }
+    ).start();
+  }
+
+  componentDidMount() {
+    this.animateBackgroundColor();
+  }
+
+  render() {
+    const backgroundColorVar = this.animatedValue.interpolate(
+    {
+      inputRange: [ 0, 1 ],
+      outputRange: [ '#96b5f6', '#2b6aeb' ]
+    });
+
+    return(
+      <Animated.View style = {[ styles.container, { backgroundColor: backgroundColorVar } ]}>
+        <Text style={ styles.text }>Eliminar</Text>
+        <Text style={ styles.text } onPress={() => this.props._removeSelected(this.props.beer)}>Cancelar</Text>
+      </Animated.View>
+    );
+  }
+}
+ 
+const styles = StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      height: 50,
+    },
+ 
+    text: {
+      color: 'white'
+    }
+});
