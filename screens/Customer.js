@@ -32,7 +32,7 @@ export default class Customer extends React.Component {
 
   _deleteCustomer = (deleteCustomer, showAlert) => {
     if(deleteCustomer(this.props.customer.id)) {
-      showAlert('Eliminado correctamente');
+      showAlert('Eliminado correctamente.');
       this.props._setView(0, null);
     }
   }

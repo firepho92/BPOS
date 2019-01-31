@@ -17,32 +17,25 @@ export default class Cart extends React.Component {
   
   _handleSale = (addSale) => {
     if(addSale(this.props.cartItems)) {
-      console.log('hola');
       this.props._hideDialog();
       this.props._setView(1, this.props.customer);
     }
   }
 
-  _handleLongPress = (beer_id) => {
-    this._addSelected(beer_id);
-    
+  _handleLongPress = (index) => {
+    this._addSelected(index);
     Vibration.vibrate(100, true);
   }
 
-  _addSelected = (beer_id) => {
-    this.setState(prevState => ({
-      selectedIndex: [...prevState.selectedIndex, beer_id]
-    }))
+  _addSelected = (index) => {
+    this.setState({
+      selectedIndex: index
+    });
   }
 
-  _removeSelected = (beer_id) => {
-    let index = 0;
-    let selectedIndexes = this.state.selectedIndex;
-    for(var i = 0; i < this.state.selectedIndex.length; i++)
-      if(this.state.selectedIndex === beer_id) index = i;
-    selectedIndexes.splice(index, 1);
+  _removeSelected = () => {
     this.setState({
-      selectedIndex: selectedIndexes
+      selectedIndex: null
     });
   }
 
@@ -53,9 +46,9 @@ export default class Cart extends React.Component {
     this.props._clearCart();
   }
 
-  _isSelected = (beer_id) => {
+  _isSelected = (index) => {
     for(var j = 0; j < this.state.selectedIndex.length; j++)
-      if(this.state.selectedIndex[j] === beer_id) return true;
+      if(this.state.selectedIndex[j] === index) return true;
     return false;
   }
 
@@ -79,9 +72,8 @@ export default class Cart extends React.Component {
                   <Divider/>
                   
                   {this.props.cartItems.map((item, i) => {
-                    console.log(this.state.selectedIndex);
                     return (
-                      this._isSelected(item.beer) ? <SelectedItem key={i} beer={item.beer} _removeSelected={this._removeSelected}/> : <Item key={i} beers={context.state.beers} item={item} beer={item.beer} _handleLongPress={this._handleLongPress}/>
+                      this.state.selectedIndex === i ? <SelectedItem key={i} index={i} beer={item.beer} _removeSelected={this._removeSelected} _removeItemFromCart={this.props._removeItemFromCart}/> : <Item key={i} beers={context.state.beers} item={item} index={i} beer={item.beer} _handleLongPress={this._handleLongPress}/>
                     );
                   })}
 
@@ -107,7 +99,7 @@ export default class Cart extends React.Component {
 class Item extends React.Component {
   render() {
     return (
-      <TouchableRipple onPress={() => console.log('adios')} onLongPress={() => this.props._handleLongPress(this.props.beer)} rippleColor="rgba(43, 106, 235, 1)" underlayColor="rgba(43, 106, 235, 1)">
+      <TouchableRipple onPress={() => console.log('')} onLongPress={() => this.props._handleLongPress(this.props.index)} rippleColor="rgba(43, 106, 235, 1)" underlayColor="rgba(43, 106, 235, 1)">
         <View style={{alignItems: 'center', display: 'flex', flexDirection: 'row', height: 50}}>
           <Text style={{flex: 1, textAlign: 'center'}}>{this.props.beers.filter(beer => beer.id === this.props.item.beer).map(beer => beer.name)}</Text>
           <Text style={{flex: 1, textAlign: 'center'}}>{this.props.item.ammount}</Text>
@@ -149,8 +141,8 @@ class SelectedItem extends React.Component {
 
     return(
       <Animated.View style = {[ styles.container, { backgroundColor: backgroundColorVar } ]}>
-        <Text style={ styles.text }>Eliminar</Text>
-        <Text style={ styles.text } onPress={() => this.props._removeSelected(this.props.beer)}>Cancelar</Text>
+        <Text style={ styles.text } onPress={() => this.props._removeItemFromCart(this.props.beer)}>Eliminar</Text>
+        <Text style={ styles.text } onPress={() => this.props._removeSelected()}>Cancelar</Text>
       </Animated.View>
     );
   }

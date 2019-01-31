@@ -51,6 +51,9 @@ class ContextProvider extends Component {
             }
         }).filter(isFinite);
         customers.splice(index, 1);
+        this.setState({
+            customers: customers
+        });
         return true;
     }
 

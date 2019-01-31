@@ -16,8 +16,6 @@ import Cart from './Cart';
 
 const FABAnimated = Animatable.createAnimatableComponent(FAB);
 
-import objectId from '../utils/id_generator';
-
 import Sale from '../models/sale';
 
 export default class SaleScreen extends React.Component {
@@ -42,6 +40,7 @@ export default class SaleScreen extends React.Component {
   }
 
   _removeItemFromCart = (beer_id) => {
+
     let cartItems = this.state.cartItems;
     let index = this.state.cartItems.map((cartItem, index) => {
       if(cartItem.beer === beer_id) {
@@ -49,6 +48,9 @@ export default class SaleScreen extends React.Component {
       }
     }).filter(isFinite);
     cartItems.splice(index, 1);
+    this.setState({
+      cartItems: cartItems
+    });
   }
 
   _clearCart = () => {
@@ -89,7 +91,7 @@ export default class SaleScreen extends React.Component {
           {context => (
             <View style={styles.baseContainer}>
               <DefineQuantity visible={this.state.quantityOpen} _hideQuantityDialog={this._hideQuantityDialog} _addItemToCart={this._addItemToCart} beer_id={this.state.beer_id}/>
-              {this.state.cartItems.length > 0 ? <Cart visible={this.state.visible} _hideDialog={this._hideDialog} cartItems={this.state.cartItems} _setView={this.props._setView} customer={this.props.customer} _clearCart={this._clearCart}/> : null}
+              {this.state.cartItems.length > 0 ? <Cart visible={this.state.visible} _hideDialog={this._hideDialog} cartItems={this.state.cartItems} _setView={this.props._setView} customer={this.props.customer} _clearCart={this._clearCart} _removeItemFromCart={this._removeItemFromCart}/> : null}
               <Appbar.Header theme={Theme}>
                 <Appbar.BackAction
                   onPress={() => this.props._setView(1, this.props.customer)}
