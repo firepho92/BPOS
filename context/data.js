@@ -93,25 +93,39 @@ customers: [
 sales: [
   {
     id: ObjectId(),
-    date: new Date(),
+    date: new Date(2019, 0, 24),
     customer: 1,
     beer: 1,
     ammount: 10
   },
   {
     id: ObjectId(),
-    date: new Date(),
+    date: new Date(2019, 0, 24),
     customer: 1,
     beer: 2,
     ammount: 6
   },
   {
     id: ObjectId(),
-    date: new Date(),
+    date: new Date(2019, 0, 24),
     customer: 1,
     beer: 3,
     ammount: 25
-  }
+  },
+  {
+    id: ObjectId(),
+    date: new Date(2019, 1, 24),
+    customer: 1,
+    beer: 5,
+    ammount: 6
+  },
+  {
+    id: ObjectId(),
+    date: new Date(2019, 1, 24),
+    customer: 2,
+    beer: 1,
+    ammount: 10
+  },
 ],
 deposits: [
   {

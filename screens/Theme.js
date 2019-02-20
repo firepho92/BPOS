@@ -2,6 +2,7 @@ import {DefaultTheme} from 'react-native-paper';
 
 export default Theme = {
   ...DefaultTheme,
+  containerMaxHeight: {height: 465},
   roundness: 5,
   colors: {
     ...DefaultTheme.colors,
